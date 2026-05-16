@@ -1,145 +1,433 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { TrendingUp, Eye, EyeOff } from "lucide-react";
-import { api } from "@/lib/api";
-import { saveToken } from "@/lib/auth";
+import { motion } from "framer-motion"
+import Link from "next/link"
+import {
+  ArrowRight,
+  Sparkles,
+  BrainCircuit,
+  ShieldCheck,
+  Activity,
+} from "lucide-react"
 
 export default function LoginPage() {
-  const router = useRouter();
-  const [form, setForm] = useState({ email: "", password: "" });
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [showPw, setShowPw] = useState(false);
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setError("");
-    setLoading(true);
-    try {
-      const res = await api.auth.login(form.email, form.password);
-      saveToken(res.access_token);
-      router.push("/dashboard");
-    } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : "Login failed");
-    } finally {
-      setLoading(false);
-    }
-  }
-
   return (
-    <div className="min-h-screen bg-ink-50 flex">
-      {/* Left branding panel */}
-      <div className="hidden lg:flex flex-col w-[420px] bg-ink-950 p-12 justify-between">
-        <div>
-          <div className="flex items-center gap-2.5 mb-16">
-            <div className="w-8 h-8 bg-amber-500 rounded-lg flex items-center justify-center">
-              <TrendingUp size={16} className="text-ink-950" />
-            </div>
-            <span className="font-display text-xl font-semibold text-white">Klypup Research</span>
-          </div>
-          <h1 className="font-display text-4xl font-medium text-white leading-tight mb-4">
-            AI-powered research,<br />
-            <em className="not-italic text-amber-400">minutes not days.</em>
-          </h1>
-          <p className="text-ink-400 leading-relaxed">
-            Query earnings calls, market data, and SEC filings through natural language. 
-            Get structured, source-attributed analysis instantly.
-          </p>
-        </div>
-        <div className="space-y-4">
-          {["NVDA", "AAPL", "TSLA"].map((ticker) => (
-            <div key={ticker} className="bg-ink-900 rounded-lg px-4 py-3 flex items-center justify-between">
-              <span className="font-mono text-sm text-ink-300">{ticker}</span>
-              <span className="text-xs text-ink-500">Live market data</span>
-            </div>
-          ))}
-        </div>
-      </div>
+    <main className="relative min-h-screen overflow-hidden bg-[#050816] text-white">
+      {/* BACKGROUND */}
 
-      {/* Right auth panel */}
-      <div className="flex-1 flex items-center justify-center p-8">
-        <div className="w-full max-w-sm">
-          <div className="lg:hidden flex items-center gap-2 mb-8">
-            <div className="w-7 h-7 bg-amber-500 rounded flex items-center justify-center">
-              <TrendingUp size={14} className="text-ink-950" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(124,58,237,0.18),transparent_30%)]" />
+
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:72px_72px] opacity-30" />
+
+      {/* NAVBAR */}
+
+      <header className="relative z-20">
+        <div className="mx-auto flex h-24 max-w-7xl items-center justify-between px-6">
+          <div className="flex items-center gap-3">
+            <div
+              className="
+                flex
+                h-10
+                w-10
+                items-center
+                justify-center
+                rounded-2xl
+                bg-white/5
+                backdrop-blur-xl
+              "
+            >
+              <BrainCircuit className="h-5 w-5 text-rose-300" />
             </div>
-            <span className="font-display text-lg font-semibold">Klypup Research</span>
+
+            <span className="text-lg font-semibold tracking-tight">
+              Klypup Research
+            </span>
           </div>
 
-          <h2 className="font-display text-3xl font-medium text-ink-900 mb-1">Welcome back</h2>
-          <p className="text-ink-500 mb-8 text-sm">Sign in to your workspace</p>
+<Link
+  href="/auth"
+  className="
+    rounded-full
+    border
+    border-white/10
+    bg-white/5
+    px-5
+    py-2.5
+    text-sm
+    text-zinc-200
+    backdrop-blur-xl
+    transition-all
+    hover:scale-105
+    hover:bg-white/10
+  "
+>
+  Sign In
+</Link>
+        </div>
+      </header>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label className="label">Email</label>
-              <input
-                className="input"
-                type="email"
-                placeholder="analyst@firm.com"
-                value={form.email}
-                onChange={(e) => setForm({ ...form, email: e.target.value })}
-                required
-              />
+      {/* HERO */}
+
+      <section
+        className="
+          relative
+          z-10
+          mx-auto
+          flex
+          min-h-[85vh]
+          max-w-7xl
+          flex-col
+          items-center
+          justify-center
+          px-6
+          text-center
+        "
+      >
+        {/* BADGE */}
+
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="
+            mb-8
+            inline-flex
+            items-center
+            gap-3
+            rounded-full
+            border
+            border-white/10
+            bg-white/5
+            px-5
+            py-3
+            backdrop-blur-xl
+          "
+        >
+          <Sparkles className="h-4 w-4 text-rose-300" />
+
+          <span className="text-sm text-zinc-300">
+            AI-powered research workspace
+          </span>
+        </motion.div>
+
+        {/* HEADING */}
+
+        <motion.h1
+          initial={{ opacity: 0, y: 25 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: 0.9,
+            delay: 0.2,
+          }}
+          className="
+            max-w-5xl
+            text-6xl
+            font-black
+            leading-[0.92]
+            tracking-[-0.04em]
+            md:text-8xl
+          "
+        >
+          AI research,
+          <br />
+
+          <span
+            className="
+              bg-gradient-to-r
+              from-white
+              via-rose-200
+              to-orange-200
+              bg-clip-text
+              text-transparent
+            "
+          >
+            reimagined
+          </span>
+
+          <br />
+
+          for modern teams.
+        </motion.h1>
+
+        {/* SUBTEXT */}
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{
+            duration: 1,
+            delay: 0.5,
+          }}
+          className="
+            mt-8
+            max-w-2xl
+            text-lg
+            leading-relaxed
+            text-zinc-400
+            md:text-xl
+          "
+        >
+          Query financial data, generate structured AI
+          insights, automate workflows, and orchestrate
+          research pipelines inside one intelligent platform.
+        </motion.p>
+
+        {/* CTA */}
+
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: 0.8,
+            delay: 0.8,
+          }}
+          className="
+            mt-10
+            flex
+            flex-wrap
+            items-center
+            justify-center
+            gap-4
+          "
+        >
+          <button
+            className="
+              group
+              flex
+              items-center
+              gap-3
+              rounded-full
+              bg-white
+              px-7
+              py-4
+              text-sm
+              font-semibold
+              text-black
+              transition-all
+              hover:scale-[1.03]
+            "
+          >
+            Launch Workspace
+
+            <ArrowRight
+              className="
+                h-4
+                w-4
+                transition-transform
+                group-hover:translate-x-1
+              "
+            />
+          </button>
+
+          <button
+            className="
+              rounded-full
+              border
+              border-white/10
+              bg-white/5
+              px-7
+              py-4
+              text-sm
+              text-zinc-300
+              backdrop-blur-xl
+              transition
+              hover:bg-white/10
+            "
+          >
+            Watch Demo
+          </button>
+        </motion.div>
+
+        {/* FLOATING PRODUCT MOCKUP */}
+
+        <motion.div
+          initial={{
+            opacity: 0,
+            y: 50,
+          }}
+          animate={{
+            opacity: 1,
+            y: 0,
+          }}
+          transition={{
+            duration: 1,
+            delay: 1,
+          }}
+          className="
+            relative
+            mt-24
+            w-full
+            max-w-6xl
+          "
+        >
+          <div
+            className="
+              absolute
+              inset-0
+              rounded-[40px]
+              bg-gradient-to-r
+              from-rose-500/20
+              to-orange-400/20
+              blur-3xl
+            "
+          />
+
+          <div
+            className="
+              relative
+              overflow-hidden
+              rounded-[36px]
+              border
+              border-white/10
+              bg-[#0b1020]/80
+              shadow-2xl
+              backdrop-blur-2xl
+            "
+          >
+            {/* TOP BAR */}
+
+            <div
+              className="
+                flex
+                items-center
+                justify-between
+                border-b
+                border-white/10
+                px-8
+                py-5
+              "
+            >
+              <div className="flex items-center gap-3">
+                <div className="h-3 w-3 rounded-full bg-red-400" />
+                <div className="h-3 w-3 rounded-full bg-yellow-400" />
+                <div className="h-3 w-3 rounded-full bg-green-400" />
+              </div>
+
+              <div
+                className="
+                  rounded-full
+                  bg-emerald-500/10
+                  px-4
+                  py-2
+                  text-sm
+                  text-emerald-300
+                "
+              >
+                Live AI System
+              </div>
             </div>
-            <div>
-              <label className="label">Password</label>
-              <div className="relative">
-                <input
-                  className="input pr-10"
-                  type={showPw ? "text" : "password"}
-                  placeholder="••••••••"
-                  value={form.password}
-                  onChange={(e) => setForm({ ...form, password: e.target.value })}
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPw(!showPw)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-400 hover:text-ink-600"
+
+            {/* DASHBOARD */}
+
+            <div className="grid gap-6 p-8 lg:grid-cols-3">
+              <div className="space-y-6 lg:col-span-2">
+                <div
+                  className="
+                    rounded-3xl
+                    border
+                    border-white/10
+                    bg-white/[0.03]
+                    p-6
+                  "
                 >
-                  {showPw ? <EyeOff size={16} /> : <Eye size={16} />}
-                </button>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-zinc-400">
+                        AI Analytics
+                      </p>
+
+                      <h3 className="mt-3 text-5xl font-black">
+                        8.2k
+                      </h3>
+                    </div>
+
+                    <div
+                      className="
+                        rounded-2xl
+                        bg-rose-500/10
+                        p-4
+                      "
+                    >
+                      <Activity className="h-7 w-7 text-rose-300" />
+                    </div>
+                  </div>
+
+                  <div
+                    className="
+                      mt-8
+                      h-48
+                      rounded-2xl
+                      bg-gradient-to-br
+                      from-rose-500/10
+                      to-orange-400/10
+                    "
+                  />
+                </div>
+
+                <div className="grid gap-6 md:grid-cols-2">
+                  {[
+                    "Realtime market intelligence",
+                    "Structured AI insights",
+                  ].map((item) => (
+                    <div
+                      key={item}
+                      className="
+                        rounded-3xl
+                        border
+                        border-white/10
+                        bg-[#13111a]/90
+                        p-6
+                      "
+                    >
+                      <ShieldCheck className="h-8 w-8 text-orange-300" />
+
+                      <p className="mt-4 text-lg font-medium">
+                        {item}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div
+                className="
+                  rounded-3xl
+                  border
+                  border-rose-500/10
+                  bg-[#1a1625]/90
+                  p-6
+                "
+              >
+                <h3 className="text-xl font-semibold">
+                  Recent Queries
+                </h3>
+
+                <div className="mt-6 space-y-4">
+                  {[
+                    "NVDA earnings analysis",
+                    "AAPL market forecast",
+                    "TSLA quarterly trends",
+                    "AI risk assessment",
+                  ].map((item) => (
+                    <div
+                      key={item}
+                      className="
+                        rounded-2xl
+                        bg-white/[0.04]
+                        p-4
+                        text-sm
+                        text-zinc-300
+                      "
+                    >
+                      {item}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
-
-            {error && (
-              <div className="bg-rose-50 border border-rose-200 rounded-lg px-3 py-2 text-sm text-rose-700">
-                {error}
-              </div>
-            )}
-
-            <button type="submit" disabled={loading} className="btn-primary w-full justify-center">
-              {loading ? (
-                <>
-                  <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                  Signing in…
-                </>
-              ) : (
-                "Sign in"
-              )}
-            </button>
-          </form>
-
-          <p className="mt-6 text-center text-sm text-ink-500">
-            No account?{" "}
-            <Link href="/signup" className="text-ink-900 font-medium hover:underline">
-              Create workspace
-            </Link>
-          </p>
-
-          {/* Demo hint */}
-          <div className="mt-8 border border-dashed border-ink-200 rounded-lg p-4">
-            <p className="text-xs text-ink-500 font-medium mb-2">DEMO CREDENTIALS</p>
-            <p className="text-xs text-ink-600 font-mono">admin@acme.com / password123</p>
-            <p className="text-xs text-ink-400 mt-1">
-              (create via signup first, then log in)
-            </p>
           </div>
-        </div>
-      </div>
-    </div>
-  );
+        </motion.div>
+      </section>
+    </main>
+  )
 }

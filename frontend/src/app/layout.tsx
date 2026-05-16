@@ -1,8 +1,16 @@
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 
-export const metadata = {
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+});
+
+export const metadata: Metadata = {
   title: "AI Research Dashboard",
-  description: "Institutional-grade AI-powered research platform",
+  description: "AI Dashboard",
 };
 
 export default function RootLayout({
@@ -12,7 +20,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className={GeistSans.className}>
+        {children}
+      </body>
     </html>
   );
 }

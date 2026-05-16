@@ -1,136 +1,23 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-/* ── Base ──────────────────────────────────────────────────────────────────── */
-@layer base {
-  :root {
-    --radius: 0.5rem;
-  }
-
-  html {
-    scroll-behavior: smooth;
-  }
-
-  body {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-
-  /* Custom scrollbar */
-  ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-  ::-webkit-scrollbar-track {
-    background: transparent;
-  }
-  ::-webkit-scrollbar-thumb {
-    background: theme("colors.zinc.300");
-    border-radius: 99px;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: theme("colors.zinc.400");
-  }
-
-  * {
-    scrollbar-width: thin;
-    scrollbar-color: theme("colors.zinc.300") transparent;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
-/* ── Animations ────────────────────────────────────────────────────────────── */
-@keyframes fade-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  overflow-x: hidden;
+
+  background:
+  radial-gradient(circle at top left, rgba(190,24,93,0.22), transparent 28%),
+  radial-gradient(circle at top right, rgba(120,53,15,0.18), transparent 30%),
+  radial-gradient(circle at bottom, rgba(239,68,68,0.12), transparent 30%),
+  #09090b;;
+
+  color: white;
 }
 
-@keyframes slide-up {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes slide-in-right {
-  from { opacity: 0; transform: translateX(16px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes shimmer {
-  0%   { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50%       { opacity: 0.5; transform: scale(0.85); }
-}
-
-@keyframes tool-reveal {
-  from { opacity: 0; transform: translateX(-8px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-
-@keyframes spin-slow {
-  to { transform: rotate(360deg); }
-}
-
-/* ── Utility classes ───────────────────────────────────────────────────────── */
-@layer utilities {
-  .animate-fade-in {
-    animation: fade-in 0.3s ease both;
-  }
-
-  .animate-slide-up {
-    animation: slide-up 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
-
-  .animate-slide-in-right {
-    animation: slide-in-right 0.3s ease both;
-  }
-
-  .animate-tool-reveal {
-    animation: tool-reveal 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
-
-  /* Skeleton shimmer */
-  .skeleton {
-    background: linear-gradient(
-      90deg,
-      theme("colors.ink.100") 25%,
-      theme("colors.ink.50")  50%,
-      theme("colors.ink.100") 75%
-    );
-    background-size: 200% 100%;
-    animation: shimmer 1.4s infinite;
-  }
-
-  /* Stagger helpers */
-  .delay-75  { animation-delay: 75ms; }
-  .delay-150 { animation-delay: 150ms; }
-  .delay-225 { animation-delay: 225ms; }
-  .delay-300 { animation-delay: 300ms; }
-  .delay-450 { animation-delay: 450ms; }
-  .delay-600 { animation-delay: 600ms; }
-
-  /* Financial colour helpers */
-  .text-up   { @apply text-emerald-600; }
-  .text-down { @apply text-red-500; }
-  .bg-up     { @apply bg-emerald-50; }
-  .bg-down   { @apply bg-red-50; }
-
-  /* Focus ring override */
-  .focus-ring {
-    @apply outline-none focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-1;
-  }
-
-  /* Ink card */
-  .card {
-    @apply bg-white rounded-xl border border-ink-100 shadow-sm;
-  }
-
-  /* Mono numbers */
-  .tabnum {
-    font-variant-numeric: tabular-nums;
-    font-family: var(--font-dm-mono, monospace);
-  }
+* {
+  box-sizing: border-box;
 }
