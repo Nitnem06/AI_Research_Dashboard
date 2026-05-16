@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { TrendingUp, Building2, KeyRound } from "lucide-react";
-import { authApi } from "@/lib/api";
+import { api } from "@/lib/api";
 import { saveToken } from "@/lib/auth";
 
 type Mode = "create" | "join";
@@ -29,7 +29,7 @@ export default function SignupPage() {
           ? { name: form.name, email: form.email, password: form.password, org_name: form.org_name }
           : { name: form.name, email: form.email, password: form.password, invite_code: form.invite_code };
 
-      const res = await authApi.signup(payload);
+      const res = await api.auth.register(payload);
       saveToken(res.access_token);
       router.push("/dashboard");
     } catch (err: unknown) {

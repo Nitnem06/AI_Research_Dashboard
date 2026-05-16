@@ -1,108 +1,160 @@
-import type { Report, ReportSummary, WatchlistItem, DashboardStats, User, Organization } from "@/types";
+// ── Central API client ────────────────────────────────────────────────────────
+// All backend calls go through here. No scattered fetch() across components.
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+import type {
+  User,
+  Report,
+  ReportData,
+  ReportSummary,
+  WatchlistItem,
+  DashboardStats,
+} from "@/components";
+
+const API_BASE =
+  process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
 
 function getToken(): string | null {
   if (typeof window === "undefined") return null;
   return localStorage.getItem("access_token");
 }
 
+class ApiError extends Error {
+  constructor(
+    public status: number,
+    message: string
+  ) {
+    super(message);
+    this.name = "ApiError";
+  }
+}
+
 async function request<T>(
   path: string,
-  options: RequestInit = {},
-  auth = true
+  options: RequestInit = {}
 ): Promise<T> {
+  const token = getToken();
+
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
     ...(options.headers as Record<string, string>),
   };
 
-  if (auth) {
-    const token = getToken();
-    if (token) headers["Authorization"] = `Bearer ${token}`;
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
   }
 
-  const res = await fetch(`${API_URL}${path}`, { ...options, headers });
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 60_000); // 60s timeout
 
-  if (res.status === 401) {
-    // Token expired — clear and redirect
-    localStorage.removeItem("access_token");
-    window.location.href = "/login";
-    throw new Error("Unauthorized");
+  try {
+    const res = await fetch(`${API_BASE}${path}`, {
+      ...options,
+      headers,
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeout);
+
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({ detail: `HTTP ${res.status}` }));
+      throw new ApiError(res.status, body.detail ?? `HTTP ${res.status}`);
+    }
+
+    if (res.status === 204) return undefined as T;
+    return res.json() as Promise<T>;
+  } catch (err) {
+    clearTimeout(timeout);
+    if (err instanceof ApiError) throw err;
+    if ((err as Error).name === "AbortError") {
+      throw new ApiError(408, "Request timed out. The AI analysis may take up to 60 seconds.");
+    }
+    throw new ApiError(0, "Network error — is the backend running?");
   }
-
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({ detail: "Unknown error" }));
-    throw new Error(err.detail || `HTTP ${res.status}`);
-  }
-
-  if (res.status === 204) return undefined as T;
-  return res.json();
 }
 
-// ── Auth ──────────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
 
-export const authApi = {
-  signup: (data: {
-    email: string;
-    name: string;
-    password: string;
-    org_name?: string;
-    invite_code?: string;
-  }) =>
-    request<{ access_token: string; token_type: string }>("/api/auth/signup", {
-      method: "POST",
-      body: JSON.stringify(data),
-    }, false),
+export const api = {
+  // ── Auth ───────────────────────────────────────────────────────────────────
+  auth: {
+    login: (email: string, password: string) =>
+      request<{ access_token: string; token_type: string }>("/auth/login", {
+        method: "POST",
+        body: JSON.stringify({ username: email, password }),
+      }),
 
-  login: (email: string, password: string) =>
-    request<{ access_token: string; token_type: string }>("/api/auth/login", {
-      method: "POST",
-      body: JSON.stringify({ email, password }),
-    }, false),
+    register: (data: {
+      email: string;
+      password: string;
+      name: string;
+      org_name?: string;
+      invite_code?: string;
+    }) =>
+      request<{ access_token: string; token_type: string }>("/auth/register", {
+        method: "POST",
+        body: JSON.stringify(data),
+      }),
 
-  me: () => request<User>("/api/auth/me"),
-  org: () => request<Organization>("/api/auth/org"),
-};
-
-// ── Research ──────────────────────────────────────────────────────────────────
-
-export const researchApi = {
-  runQuery: (query: string) =>
-    request<Report>("/api/research/query", {
-      method: "POST",
-      body: JSON.stringify({ query }),
-    }),
-
-  listReports: (search?: string, tag?: string) => {
-    const params = new URLSearchParams();
-    if (search) params.set("search", search);
-    if (tag) params.set("tag", tag);
-    const qs = params.toString();
-    return request<ReportSummary[]>(`/api/research/reports${qs ? `?${qs}` : ""}`);
+    me: () => request<User>("/auth/me"),
   },
 
-  getReport: (id: string) => request<Report>(`/api/research/reports/${id}`),
+  // ── Research ───────────────────────────────────────────────────────────────
+  research: {
+    /** Submit a natural-language query. Returns the full AI analysis. */
+    query: (query: string) =>
+      request<ReportData>("/research/query", {
+        method: "POST",
+        body: JSON.stringify({ query }),
+      }),
 
-  updateReport: (id: string, data: { title?: string; tags?: string[] }) =>
-    request<Report>(`/api/research/reports/${id}`, {
-      method: "PATCH",
-      body: JSON.stringify(data),
-    }),
+    /** Persist a completed analysis as a saved report. */
+    saveReport: (data: {
+      query: string;
+      title: string;
+      report_data: ReportData;
+      tags: string[];
+      tickers: string;
+    }) =>
+      request<Report>("/research/reports", {
+        method: "POST",
+        body: JSON.stringify(data),
+      }),
 
-  deleteReport: (id: string) =>
-    request<void>(`/api/research/reports/${id}`, { method: "DELETE" }),
+    getReports: (search?: string) =>
+      request<ReportSummary[]>(
+        `/research/reports${search ? `?search=${encodeURIComponent(search)}` : ""}`
+      ),
 
-  stats: () => request<DashboardStats>("/api/research/stats"),
+    getReport: (id: string) => request<Report>(`/research/reports/${id}`),
 
-  getWatchlist: () => request<WatchlistItem[]>("/api/research/watchlist"),
+    deleteReport: (id: string) =>
+      request<void>(`/research/reports/${id}`, { method: "DELETE" }),
 
-  addToWatchlist: (data: { ticker: string; company_name: string; notes?: string }) =>
-    request<WatchlistItem>("/api/research/watchlist", {
-      method: "POST",
-      body: JSON.stringify(data),
-    }),
+    updateTags: (id: string, tags: string[]) =>
+      request<Report>(`/research/reports/${id}/tags`, {
+        method: "PATCH",
+        body: JSON.stringify({ tags }),
+      }),
+  },
 
-  removeFromWatchlist: (id: string) =>
-    request<void>(`/api/research/watchlist/${id}`, { method: "DELETE" }),
+  // ── Watchlist ──────────────────────────────────────────────────────────────
+  watchlist: {
+    get: () => request<WatchlistItem[]>("/research/watchlist"),
+
+    add: (ticker: string) =>
+      request<WatchlistItem>("/research/watchlist", {
+        method: "POST",
+        body: JSON.stringify({ ticker }),
+      }),
+
+    remove: (id: string) =>
+      request<void>(`/research/watchlist/${id}`, { method: "DELETE" }),
+  },
+
+  // ── Stats ──────────────────────────────────────────────────────────────────
+  stats: {
+    dashboard: () => request<DashboardStats>("/research/stats"),
+  },
 };
+
+export { ApiError };

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { TrendingUp, Eye, EyeOff } from "lucide-react";
-import { authApi } from "@/lib/api";
+import { api } from "@/lib/api";
 import { saveToken } from "@/lib/auth";
 
 export default function LoginPage() {
@@ -19,7 +19,7 @@ export default function LoginPage() {
     setError("");
     setLoading(true);
     try {
-      const res = await authApi.login(form.email, form.password);
+      const res = await api.auth.login(form.email, form.password);
       saveToken(res.access_token);
       router.push("/dashboard");
     } catch (err: unknown) {

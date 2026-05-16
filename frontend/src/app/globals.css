@@ -2,13 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ── Base ──────────────────────────────────────────────────────────────────── */
 @layer base {
   :root {
-    --sidebar-width: 240px;
-  }
-
-  * {
-    box-sizing: border-box;
+    --radius: 0.5rem;
   }
 
   html {
@@ -16,53 +13,124 @@
   }
 
   body {
-    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Scrollbar */
+  /* Custom scrollbar */
   ::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
+    width: 6px;
+    height: 6px;
   }
   ::-webkit-scrollbar-track {
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: #c5bfb0;
+    background: theme("colors.zinc.300");
     border-radius: 99px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: theme("colors.zinc.400");
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: theme("colors.zinc.300") transparent;
   }
 }
 
-@layer components {
+/* ── Animations ────────────────────────────────────────────────────────────── */
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.85); }
+}
+
+@keyframes tool-reveal {
+  from { opacity: 0; transform: translateX(-8px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Utility classes ───────────────────────────────────────────────────────── */
+@layer utilities {
+  .animate-fade-in {
+    animation: fade-in 0.3s ease both;
+  }
+
+  .animate-slide-up {
+    animation: slide-up 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .animate-slide-in-right {
+    animation: slide-in-right 0.3s ease both;
+  }
+
+  .animate-tool-reveal {
+    animation: tool-reveal 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  /* Skeleton shimmer */
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      theme("colors.ink.100") 25%,
+      theme("colors.ink.50")  50%,
+      theme("colors.ink.100") 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
+  }
+
+  /* Stagger helpers */
+  .delay-75  { animation-delay: 75ms; }
+  .delay-150 { animation-delay: 150ms; }
+  .delay-225 { animation-delay: 225ms; }
+  .delay-300 { animation-delay: 300ms; }
+  .delay-450 { animation-delay: 450ms; }
+  .delay-600 { animation-delay: 600ms; }
+
+  /* Financial colour helpers */
+  .text-up   { @apply text-emerald-600; }
+  .text-down { @apply text-red-500; }
+  .bg-up     { @apply bg-emerald-50; }
+  .bg-down   { @apply bg-red-50; }
+
+  /* Focus ring override */
+  .focus-ring {
+    @apply outline-none focus-visible:ring-2 focus-visible:ring-amber-400 focus-visible:ring-offset-1;
+  }
+
+  /* Ink card */
   .card {
-    @apply bg-white rounded-xl shadow-card border border-ink-100;
+    @apply bg-white rounded-xl border border-ink-100 shadow-sm;
   }
 
-  .btn-primary {
-    @apply inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-ink-900 text-white text-sm font-medium
-           hover:bg-ink-700 transition-colors duration-150 disabled:opacity-50 disabled:cursor-not-allowed;
-  }
-
-  .btn-secondary {
-    @apply inline-flex items-center gap-2 px-4 py-2.5 rounded-lg bg-white text-ink-700 text-sm font-medium
-           border border-ink-200 hover:bg-ink-50 transition-colors duration-150;
-  }
-
-  .input {
-    @apply w-full px-3 py-2.5 rounded-lg border border-ink-200 bg-white text-ink-900 text-sm
-           placeholder:text-ink-400 focus:outline-none focus:ring-2 focus:ring-ink-900/20 focus:border-ink-400
-           transition-colors duration-150;
-  }
-
-  .label {
-    @apply text-sm font-medium text-ink-700 mb-1.5 block;
-  }
-
-  .metric-value {
-    @apply font-mono text-lg font-medium text-ink-900;
-  }
-
-  .metric-label {
-    @apply text-xs text-ink-500 uppercase tracking-wider;
+  /* Mono numbers */
+  .tabnum {
+    font-variant-numeric: tabular-nums;
+    font-family: var(--font-dm-mono, monospace);
   }
 }

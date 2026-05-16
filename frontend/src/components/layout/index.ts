@@ -159,3 +159,5 @@ export interface DashboardStats {
   total_reports: number;
   watchlist_companies: number;
 }
+
+export { default as Sidebar } from "./sidebar";
