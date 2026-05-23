@@ -108,4 +108,10 @@ class WatchlistOut(BaseModel):
     notes: str | None
     added_at: datetime
 
-    model_config = {"from_attributes": True}
+    model_config = {"from_attributes": True}from pydantic import BaseModel
+
+class CompanyResearchRequest(BaseModel):
+    ticker: str
+
+class SummaryRequest(BaseModel):
+    data: dict
