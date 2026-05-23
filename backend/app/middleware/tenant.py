@@ -23,4 +23,17 @@ def get_tenant_context(request: Request) -> dict:
     return {
         "org_id": getattr(request.state, "org_id", None),
         "user_id": getattr(request.state, "user_id", None),
+    }from fastapi import Request
+from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.responses import Response
+
+class TenantMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next) -> Response:
+        request.state.org_id = None  # Initialize org_id
+        response = await call_next(request)
+        return response
+
+def get_tenant_context(request: Request) -> dict:
+    return {
+        "org_id": getattr(request.state, "org_id", None),
     }

@@ -15,7 +15,8 @@ router = APIRouter(prefix="/api/auth", tags=["auth"])
 @router.post("/signup", response_model=Token, status_code=201)
 async def signup(payload: UserSignup, db: AsyncSession = Depends(get_db)):
     # Check email uniqueness
-    existing = await db.execute(select(User).where(User.email == payload.email))
+    try:
+        existing = await db.execute(select(User).where(User.email == payload.email))
     if existing.scalar_one_or_none():
         raise HTTPException(status_code=409, detail="Email already registered")
 

@@ -39,7 +39,7 @@ async def run_research(
     title = report_data.get("title") or f"Research: {payload.query[:80]}"
 
     report = ResearchReport(
-        org_id=current_user.org_id,      # ← tenant isolation enforced here
+        org_id=current_user.org_id,  # Ensure tenant isolation
         author_id=current_user.id,
         query=payload.query,
         title=title,
