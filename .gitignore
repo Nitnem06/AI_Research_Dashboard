@@ -13,3 +13,4 @@ frontend/.next/
 
 # Logs
 *.log
+.aider*
