@@ -19,6 +19,7 @@ async def signup(payload: UserSignup, db: AsyncSession = Depends(get_db)):
         existing = await db.execute(select(User).where(User.email == payload.email))
     if existing.scalar_one_or_none():
         raise HTTPException(status_code=409, detail="Email already registered")
+        raise HTTPException(status_code=409, detail="Email already registered")
 
     if not payload.org_name and not payload.invite_code:
         raise HTTPException(status_code=422, detail="Provide org_name (new org) or invite_code (join existing)")
