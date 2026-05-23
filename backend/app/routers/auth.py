@@ -17,8 +17,9 @@ async def signup(payload: UserSignup, db: AsyncSession = Depends(get_db)):
     # Check email uniqueness
     try:
         existing = await db.execute(select(User).where(User.email == payload.email))
-    if existing.scalar_one_or_none():
-        raise HTTPException(status_code=409, detail="Email already registered")
+    try:
+        existing = await db.execute(select(User).where(User.email == payload.email))
+        if existing.scalar_one_or_none():
         raise HTTPException(status_code=409, detail="Email already registered")
 
     if not payload.org_name and not payload.invite_code:
