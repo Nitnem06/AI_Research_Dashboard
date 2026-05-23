@@ -16,7 +16,6 @@ import { AnalyticsChart } from "@/components/dashboard/analytics-chart"
 export default function DashboardPage() {
   return (
     <main className="min-h-screen bg-transparent text-white">
-      <TopNavbar />
 
       <div className="p-6 md:p-8">
         {/* HERO */}

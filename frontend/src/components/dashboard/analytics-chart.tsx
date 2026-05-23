@@ -30,7 +30,7 @@ export function AnalyticsChart() {
     },
 
     stroke: {
-      curve: "smooth",
+      curve: "straight",
       width: 3,
     },
 
@@ -95,12 +95,12 @@ export function AnalyticsChart() {
   }
 
   return (
-    <div className="h-[320px]">
+    <div>
       <Chart
         options={options}
         series={series}
         type="area"
-        height="100%"
+        height={320}
       />
     </div>
   )
