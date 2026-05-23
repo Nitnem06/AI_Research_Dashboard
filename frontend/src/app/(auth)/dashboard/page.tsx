@@ -1,384 +1,301 @@
 "use client"
 
-import { motion } from "framer-motion"
 import {
-  Sparkles,
-  ArrowRight,
   BrainCircuit,
+  TrendingUp,
   Activity,
-  FolderKanban,
+  FileText,
+  Sparkles,
+  ArrowUpRight,
 } from "lucide-react"
 
+import { TopNavbar } from "@/components/dashboard/top-navbar"
 import { MetricCard } from "@/components/dashboard/metric-card"
+import { AnalyticsChart } from "@/components/dashboard/analytics-chart"
 
 export default function DashboardPage() {
   return (
-    <main className="relative min-h-screen overflow-hidden px-6 py-10">
-      {/* BACKGROUND ORBS */}
+    <main className="min-h-screen bg-transparent text-white">
+      <TopNavbar />
 
-      <div className="orb orb-1" />
-      <div className="orb orb-2" />
-      <div className="orb orb-3" />
+      <div className="p-6 md:p-8">
+        {/* HERO */}
 
-      {/* HERO */}
-
-      <section
-        className="
-          relative
-          z-10
-          mx-auto
-          flex
-          max-w-7xl
-          flex-col
-          items-center
-          justify-center
-          text-center
-        "
-      >
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+        <section
           className="
             glass
-            mb-8
-            inline-flex
-            items-center
-            gap-3
-            rounded-full
-            px-6
-            py-3
-          "
-        >
-          <Sparkles className="h-5 w-5 text-violet-300" />
-
-          <span className="text-sm text-zinc-300">
-            Intelligent AI Workspace
-          </span>
-        </motion.div>
-
-        <motion.h1
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: 1,
-            delay: 0.2,
-          }}
-          className="
-            max-w-5xl
-            text-6xl
-            font-black
-            leading-[1]
-            tracking-tight
-            md:text-8xl
-          "
-        >
-          The Future of
-          <br />
-
-          <span className="gradient-text">
-            AI Research
-          </span>
-
-          <br />
-
-          Starts Here.
-        </motion.h1>
-
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{
-            delay: 0.5,
-            duration: 1,
-          }}
-          className="
-            mt-8
-            max-w-2xl
-            text-lg
-            leading-relaxed
-            text-zinc-400
-            md:text-xl
-          "
-        >
-          Build intelligent workflows, manage research,
-          generate insights, and orchestrate AI systems
-          inside a premium next-generation workspace.
-        </motion.p>
-
-        {/* CTA */}
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            delay: 0.8,
-            duration: 0.8,
-          }}
-          className="
-            mt-10
-            flex
-            flex-wrap
-            items-center
-            justify-center
-            gap-4
-          "
-        >
-          <button
-            className="
-              group
-              flex
-              items-center
-              gap-2
-              rounded-full
-              bg-gradient-to-r
-              from-violet-500
-              to-cyan-500
-              px-8
-              py-4
-              text-sm
-              font-semibold
-              transition-all
-              hover:scale-105
-            "
-          >
-            Launch Workspace
-
-            <ArrowRight
-              className="
-                h-4
-                w-4
-                transition-transform
-                group-hover:translate-x-1
-              "
-            />
-          </button>
-
-          <button
-            className="
-              glass
-              rounded-full
-              px-8
-              py-4
-              text-sm
-              text-zinc-300
-              transition-all
-              hover:scale-105
-            "
-          >
-            Watch Demo
-          </button>
-        </motion.div>
-      </section>
-
-      {/* FLOATING DASHBOARD PREVIEW */}
-
-      <motion.section
-        initial={{
-          opacity: 0,
-          y: 80,
-        }}
-        animate={{
-          opacity: 1,
-          y: 0,
-        }}
-        transition={{
-          delay: 1,
-          duration: 1,
-        }}
-        className="
-          relative
-          z-10
-          mx-auto
-          mt-24
-          max-w-7xl
-        "
-      >
-        <div
-          className="
-            glass
+            relative
             overflow-hidden
-            rounded-[40px]
+            rounded-[36px]
             p-8
+            md:p-12
           "
         >
-          {/* TOP BAR */}
+          <div
+            className="
+              absolute
+              right-0
+              top-0
+              h-72
+              w-72
+              rounded-full
+              bg-violet-500/20
+              blur-3xl
+            "
+          />
 
-          <div className="mb-10 flex items-center justify-between">
-            <div>
-              <h2 className="text-3xl font-bold">
-                AI Command Center
-              </h2>
-
-              <p className="mt-2 text-zinc-400">
-                Real-time intelligent analytics
-              </p>
-            </div>
-
+          <div className="relative z-10 max-w-3xl">
             <div
               className="
+                mb-6
+                inline-flex
+                items-center
+                gap-2
                 rounded-full
                 border
                 border-white/10
                 bg-white/5
-                px-5
+                px-4
                 py-2
                 text-sm
                 text-zinc-300
               "
             >
-              Live System
+              <Sparkles className="h-4 w-4 text-violet-300" />
+
+              AI-Powered Research Intelligence
+            </div>
+
+            <h1
+              className="
+                text-5xl
+                font-black
+                leading-tight
+                tracking-tight
+                md:text-7xl
+              "
+            >
+              Institutional Grade
+              <span className="gradient-text block">
+                Research Dashboard
+              </span>
+            </h1>
+
+            <p
+              className="
+                mt-6
+                max-w-2xl
+                text-lg
+                leading-relaxed
+                text-zinc-400
+              "
+            >
+              Monitor market signals, AI-generated insights,
+              research pipelines, and portfolio intelligence
+              from one unified workspace.
+            </p>
+
+            <div className="mt-8 flex flex-wrap gap-4">
+              <button
+                className="
+                  rounded-2xl
+                  bg-gradient-to-r
+                  from-violet-500
+                  to-fuchsia-500
+                  px-6
+                  py-4
+                  font-semibold
+                  transition-all
+                  hover:scale-[1.03]
+                "
+              >
+                Generate Report
+              </button>
+
+              <button
+                className="
+                  rounded-2xl
+                  border
+                  border-white/10
+                  bg-white/5
+                  px-6
+                  py-4
+                  font-semibold
+                  text-zinc-300
+                  transition-all
+                  hover:bg-white/10
+                "
+              >
+                Explore Analytics
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {/* METRICS */}
+
+        <section
+          className="
+            mt-8
+            grid
+            gap-6
+            md:grid-cols-2
+            xl:grid-cols-4
+          "
+        >
+          <MetricCard
+            title="Research Reports"
+            value="148"
+            change="+18% this month"
+            icon={FileText}
+          />
+
+          <MetricCard
+            title="AI Insights"
+            value="2.4K"
+            change="+31% engagement"
+            icon={BrainCircuit}
+          />
+
+          <MetricCard
+            title="Market Signals"
+            value="89"
+            change="+12 new today"
+            icon={TrendingUp}
+          />
+
+          <MetricCard
+            title="Active Pipelines"
+            value="16"
+            change="98% uptime"
+            icon={Activity}
+          />
+        </section>
+
+        {/* ANALYTICS GRID */}
+
+        <section
+          className="
+            mt-8
+            grid
+            gap-6
+            xl:grid-cols-3
+          "
+        >
+          {/* LARGE PANEL */}
+
+          <div
+            className="
+              glass
+              col-span-2
+              rounded-[32px]
+              p-8
+            "
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-zinc-400">
+                  AI Market Overview
+                </p>
+
+                <h2 className="mt-2 text-3xl font-bold">
+                  Research Activity
+                </h2>
+              </div>
+
+              <button
+                className="
+                  flex
+                  items-center
+                  gap-2
+                  rounded-xl
+                  bg-white/5
+                  px-4
+                  py-2
+                  text-sm
+                  text-zinc-300
+                "
+              >
+                View Full Report
+
+                <ArrowUpRight className="h-4 w-4" />
+              </button>
+            </div>
+
+            <div
+              className="
+                mt-8
+                rounded-3xl
+                border
+                border-white/5
+                bg-black/20
+                p-4
+              "
+            >
+              <AnalyticsChart />
             </div>
           </div>
 
-          {/* METRIC CARDS */}
+          {/* SIDE PANEL */}
 
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-            <MetricCard
-              title="Research Tasks"
-              value="148"
-              change="+12% this week"
-              icon={BrainCircuit}
-            />
+          <div
+            className="
+              glass
+              rounded-[32px]
+              p-8
+            "
+          >
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-zinc-400">
+                  AI Summary
+                </p>
 
-            <MetricCard
-              title="Projects"
-              value="23"
-              change="+4 active"
-              icon={FolderKanban}
-            />
-
-            <MetricCard
-              title="AI Generations"
-              value="8.2k"
-              change="+18%"
-              icon={Sparkles}
-            />
-
-            <MetricCard
-              title="System Health"
-              value="99.2%"
-              change="Stable"
-              icon={Activity}
-            />
-          </div>
-
-          {/* BIG PANEL */}
-
-          <div className="mt-8 grid gap-6 lg:grid-cols-3">
-            <div
-              className="
-                glass
-                lg:col-span-2
-                rounded-[30px]
-                p-8
-              "
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-2xl font-bold">
-                    AI Analytics
-                  </h3>
-
-                  <p className="mt-2 text-zinc-400">
-                    Intelligent system monitoring
-                  </p>
-                </div>
-
-                <div
-                  className="
-                    rounded-full
-                    bg-violet-500/10
-                    px-4
-                    py-2
-                    text-sm
-                    text-violet-300
-                  "
-                >
-                  +18%
-                </div>
+                <h3 className="mt-2 text-2xl font-bold">
+                  Market Sentiment
+                </h3>
               </div>
 
               <div
                 className="
-                  mt-8
-                  flex
-                  h-[320px]
-                  items-center
-                  justify-center
-                  rounded-[24px]
-                  border
-                  border-white/5
-                  bg-gradient-to-br
-                  from-violet-500/10
-                  to-cyan-500/10
+                  rounded-2xl
+                  bg-emerald-500/10
+                  px-3
+                  py-1
+                  text-sm
+                  text-emerald-400
                 "
               >
-                <p className="text-zinc-500">
-                  Interactive analytics visualization
-                </p>
+                Bullish
               </div>
             </div>
 
-            <div
-              className="
-                glass
-                rounded-[30px]
-                p-8
-              "
-            >
-              <h3 className="text-2xl font-bold">
-                Recent Activity
-              </h3>
-
-              <div className="mt-8 space-y-5">
-                {[1,2,3,4].map((item) => (
-                  <motion.div
-                    whileHover={{
-                      scale: 1.03,
-                    }}
-                    key={item}
-                    className="
-                      flex
-                      items-center
-                      gap-4
-                      rounded-2xl
-                      border
-                      border-white/5
-                      bg-white/[0.03]
-                      p-4
-                    "
-                  >
-                    <div
-                      className="
-                        flex
-                        h-12
-                        w-12
-                        items-center
-                        justify-center
-                        rounded-2xl
-                        bg-violet-500/10
-                      "
-                    >
-                      <Sparkles className="h-5 w-5 text-violet-300" />
-                    </div>
-
-                    <div>
-                      <p className="font-medium">
-                        AI report generated
-                      </p>
-
-                      <p className="text-sm text-zinc-400">
-                        2 mins ago
-                      </p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
+            <div className="mt-8 space-y-5">
+              {[
+                "Technology sector sentiment increased by 14%",
+                "AI-related equities outperforming market average",
+                "High institutional activity detected",
+                "Research generation latency reduced by 28%",
+              ].map((item) => (
+                <div
+                  key={item}
+                  className="
+                    rounded-2xl
+                    border
+                    border-white/5
+                    bg-white/[0.03]
+                    p-4
+                    text-sm
+                    text-zinc-300
+                  "
+                >
+                  {item}
+                </div>
+              ))}
             </div>
           </div>
-        </div>
-      </motion.section>
+        </section>
+      </div>
     </main>
   )
 }

@@ -27,12 +27,16 @@ export function MetricCard({
         stiffness: 200,
       }}
       className="
-        glass
-        relative
-        overflow-hidden
-        rounded-[28px]
-        p-6
-      "
+  glass
+  hover-scale
+  relative
+  overflow-hidden
+  rounded-[32px]
+  border
+  border-white/5
+  p-7
+  shadow-2xl
+"
     >
       <div
         className="
@@ -64,7 +68,7 @@ export function MetricCard({
           </div>
         </div>
 
-        <h3 className="mt-6 text-5xl font-black tracking-tight">
+        <h3 className="mt-6 text-4xl md:text-5xl font-black tracking-tight">
           {value}
         </h3>
 

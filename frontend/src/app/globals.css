@@ -1,5 +1,16 @@
 @import "tailwindcss";
 
+:root {
+  --background: #09090b;
+  --foreground: #fafafa;
+
+  --card: rgba(24, 24, 27, 0.7);
+  --border: rgba(255,255,255,0.08);
+
+  --primary: #7c3aed;
+  --secondary: #ec4899;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -10,14 +21,49 @@ body {
   overflow-x: hidden;
 
   background:
-  radial-gradient(circle at top left, rgba(190,24,93,0.22), transparent 28%),
-  radial-gradient(circle at top right, rgba(120,53,15,0.18), transparent 30%),
-  radial-gradient(circle at bottom, rgba(239,68,68,0.12), transparent 30%),
-  #09090b;;
+    radial-gradient(circle at top left, rgba(124,58,237,0.25), transparent 30%),
+    radial-gradient(circle at top right, rgba(236,72,153,0.18), transparent 35%),
+    radial-gradient(circle at bottom, rgba(59,130,246,0.15), transparent 35%),
+    #09090b;
 
   color: white;
+
+  font-family:
+    Inter,
+    system-ui,
+    sans-serif;
 }
 
 * {
   box-sizing: border-box;
+}
+
+.glass {
+  background: rgba(24, 24, 27, 0.6);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.gradient-text {
+  background: linear-gradient(
+    to right,
+    #a78bfa,
+    #f472b6
+  );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.dashboard-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.hover-scale {
+  transition: all 0.25s ease;
+}
+
+.hover-scale:hover {
+  transform: translateY(-4px);
 }

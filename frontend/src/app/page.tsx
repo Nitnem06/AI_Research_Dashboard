@@ -16,8 +16,14 @@ export default function RootPage() {
   }, [router]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-ink-50">
-      <div className="w-5 h-5 border-2 border-ink-300 border-t-ink-900 rounded-full animate-spin" />
+  <div className="min-h-screen flex items-center justify-center bg-black">
+    <div className="flex flex-col items-center gap-4">
+      <div className="h-12 w-12 rounded-full border-4 border-zinc-700 border-t-violet-500 animate-spin" />
+
+      <p className="text-zinc-400 text-sm tracking-wide">
+        Loading Dashboard...
+      </p>
     </div>
-  );
+  </div>
+);
 }

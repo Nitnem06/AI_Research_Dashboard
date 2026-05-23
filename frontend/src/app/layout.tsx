@@ -20,7 +20,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={GeistSans.className}>
+      <body
+        className={`${GeistSans.className} antialiased bg-black text-white`}
+      >
         {children}
       </body>
     </html>
