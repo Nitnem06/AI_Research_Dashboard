@@ -1,5 +1,7 @@
 "use client"
 
+import { useState } from "react"
+
 import {
   BrainCircuit,
   TrendingUp,
@@ -14,6 +16,34 @@ import { MetricCard } from "@/components/dashboard/metric-card"
 import { AnalyticsChart } from "@/components/dashboard/analytics-chart"
 
 export default function DashboardPage() {
+  // ===============================
+  // AI SEARCH STATE (NEW - SAFE)
+  // ===============================
+  const [query, setQuery] = useState("")
+  const [results, setResults] = useState<any[]>([])
+  const [loading, setLoading] = useState(false)
+
+  const search = async () => {
+    try {
+      setLoading(true)
+
+      const res = await fetch("http://127.0.0.1:8000/research/search", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ query }),
+      })
+
+      const data = await res.json()
+      setResults(data.results || [])
+    } catch (err) {
+      console.error("Search failed:", err)
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <main className="min-h-screen bg-transparent text-white">
 
@@ -131,8 +161,54 @@ export default function DashboardPage() {
           </div>
         </section>
 
-        {/* METRICS */}
+        {/* ===============================
+            AI SEARCH (NEW FEATURE - SAFE ADDITION)
+        =============================== */}
+        <section className="mt-8 glass rounded-[32px] p-6">
+          <h2 className="text-xl font-bold mb-4">
+            Ask Research AI
+          </h2>
 
+          <div className="flex gap-3">
+            <input
+              className="flex-1 rounded-xl bg-white/5 p-3 text-white outline-none"
+              placeholder="e.g. NVIDIA revenue growth"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+
+            <button
+              onClick={search}
+              className="rounded-xl bg-violet-500 px-6 py-3 font-semibold"
+            >
+              {loading ? "Searching..." : "Search"}
+            </button>
+          </div>
+
+          {/* RESULTS */}
+          <div className="mt-6 space-y-4">
+            {results.map((r: any, i: number) => (
+              <div
+                key={i}
+                className="rounded-2xl border border-white/10 bg-white/5 p-4"
+              >
+                <div className="text-sm text-violet-300">
+                  {r.company} • {r.ticker}
+                </div>
+
+                <p className="mt-2 text-sm text-zinc-300">
+                  {r.excerpt}
+                </p>
+
+                <div className="mt-2 text-xs text-zinc-500">
+                  Score: {r.relevance_score}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* METRICS */}
         <section
           className="
             mt-8
@@ -172,7 +248,6 @@ export default function DashboardPage() {
         </section>
 
         {/* ANALYTICS GRID */}
-
         <section
           className="
             mt-8
@@ -182,7 +257,6 @@ export default function DashboardPage() {
           "
         >
           {/* LARGE PANEL */}
-
           <div
             className="
               glass
@@ -216,7 +290,6 @@ export default function DashboardPage() {
                 "
               >
                 View Full Report
-
                 <ArrowUpRight className="h-4 w-4" />
               </button>
             </div>
@@ -236,7 +309,6 @@ export default function DashboardPage() {
           </div>
 
           {/* SIDE PANEL */}
-
           <div
             className="
               glass
