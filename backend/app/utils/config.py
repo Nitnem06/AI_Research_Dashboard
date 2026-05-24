@@ -22,8 +22,8 @@ class Settings(BaseSettings):
     NEWS_API_KEY: str = ""
 
     # FAISS vector store path
-    VECTOR_STORE_PATH: str = "./data/faiss_index"
-    SAMPLE_DOCS_PATH: str = "./data/sample_docs"
+    VECTOR_STORE_PATH: str = "./app/data/faiss_index"
+    SAMPLE_DOCS_PATH: str = "./app/data/sample_docs"
 
     # CORS
     FRONTEND_URL: str = "http://localhost:3000"

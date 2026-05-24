@@ -5,7 +5,7 @@ Exposes search_knowledge_base() as an AI tool.
 """
 import logging
 import numpy as np
-from app.config import settings
+from app.core.config import settings
 
 logger = logging.getLogger(__name__)
 
@@ -18,9 +18,9 @@ _kb_available = False
 
 def init_knowledge_base():
     global _index, _model, _metadata, _kb_available
-    from app.services.ai.vector_store.ingest import load_or_build_index
+    from app.data.sample_docs.ingest import load_or_build_index
     _index, _model, _metadata = load_or_build_index(settings.VECTOR_STORE_PATH)
-    _kb_available = _index is not None
+    _kb_available = all([_index, _model, _metadata])
     if not _kb_available:
         logger.warning("Knowledge base unavailable — FAISS/sentence-transformers not installed.")
 
@@ -42,6 +42,8 @@ async def search_knowledge_base(query: str, company: str | None = None, top_k: i
         import faiss
         # Embed the query
         q_embedding = _model.encode([query], show_progress_bar=False)
+        if _model is None or _index is None:
+            return {"error": "KB not initialized"}
         q_embedding = np.array(q_embedding, dtype="float32")
         faiss.normalize_L2(q_embedding)
 

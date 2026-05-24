@@ -17,7 +17,7 @@ from typing import Any
 
 import anthropic
 
-from app.config import settings
+from app.core.config import settings
 from app.services.ai.tools.market_data import get_market_data
 from app.services.ai.tools.news_tool import search_financial_news
 from app.services.ai.vector_store.retriever import search_knowledge_base

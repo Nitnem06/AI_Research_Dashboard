@@ -103,12 +103,15 @@ class WatchlistAdd(BaseModel):
 
 class WatchlistOut(BaseModel):
     id: UUID
+    org_id: UUID
+    added_by: UUID
     ticker: str
-    company_name: str
-    notes: str | None
+    company_name: str | None = None
+    notes: str | None = None
     added_at: datetime
 
-    model_config = {"from_attributes": True}from pydantic import BaseModel
+    class Config:
+        from_attributes = True
 
 class CompanyResearchRequest(BaseModel):
     ticker: str

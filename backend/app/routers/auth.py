@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
-from app.database import get_db
+from app.utils.database import get_db
 from app.models.user import User, Organization, UserRole
 from app.schemas import UserSignup, UserLogin, Token, UserOut, OrgOut
 from app.utils.security import hash_password, verify_password, create_access_token, get_current_user
@@ -14,33 +14,43 @@ router = APIRouter(prefix="/api/auth", tags=["auth"])
 
 @router.post("/signup", response_model=Token, status_code=201)
 async def signup(payload: UserSignup, db: AsyncSession = Depends(get_db)):
+
     # Check email uniqueness
-    try:
-        existing = await db.execute(select(User).where(User.email == payload.email))
-    try:
-        existing = await db.execute(select(User).where(User.email == payload.email))
-        if existing.scalar_one_or_none():
+    result = await db.execute(
+        select(User).where(User.email == payload.email)
+    )
+    existing = result.scalar_one_or_none()
+
+    if existing:
         raise HTTPException(status_code=409, detail="Email already registered")
 
     if not payload.org_name and not payload.invite_code:
-        raise HTTPException(status_code=422, detail="Provide org_name (new org) or invite_code (join existing)")
+        raise HTTPException(
+            status_code=422,
+            detail="Provide org_name (new org) or invite_code (join existing)"
+        )
 
     # Resolve organization
     if payload.invite_code:
-        # Join existing org
-        result = await db.execute(select(Organization).where(Organization.invite_code == payload.invite_code))
+        result = await db.execute(
+            select(Organization).where(
+                Organization.invite_code == payload.invite_code
+            )
+        )
         org = result.scalar_one_or_none()
+
         if not org:
             raise HTTPException(status_code=404, detail="Invalid invite code")
+
         role = UserRole.ANALYST
+
     else:
-        # Create new org — first user becomes admin
         org = Organization(
             name=payload.org_name,
             invite_code=secrets.token_urlsafe(8)[:12],
         )
         db.add(org)
-        await db.flush()  # get org.id
+        await db.flush()
         role = UserRole.ADMIN
 
     user = User(
@@ -50,11 +60,17 @@ async def signup(payload: UserSignup, db: AsyncSession = Depends(get_db)):
         role=role,
         org_id=org.id,
     )
+
     db.add(user)
     await db.commit()
     await db.refresh(user)
 
-    token = create_access_token({"sub": str(user.id), "org_id": str(org.id), "role": role.value})
+    token = create_access_token({
+        "sub": str(user.id),
+        "org_id": str(org.id),
+        "role": role.value
+    })
+
     return Token(access_token=token)
 
 

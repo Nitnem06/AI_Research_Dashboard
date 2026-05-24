@@ -7,7 +7,7 @@ Source: NewsAPI.org (free tier — 100 req/day)
 import httpx
 import logging
 from datetime import datetime, timedelta
-from app.config import settings
+from app.core.config import settings
 
 logger = logging.getLogger(__name__)
 
