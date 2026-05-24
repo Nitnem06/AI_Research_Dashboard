@@ -19,12 +19,18 @@ logger = logging.getLogger(__name__)
 async def lifespan(app: FastAPI):
     # Startup
     logger.info("Initialising database...")
-    await init_db()
+    try:
+        await init_db()
+    except Exception as e:
+        logger.error(f"DB init failed: {e}")
 
     logger.info("Loading knowledge base (FAISS)...")
     try:
         from app.services.ai.vector_store.retriever import init_knowledge_base
-        init_knowledge_base()
+        try:
+            init_knowledge_base()
+        except Exception as e:
+            logger.warning(f"KB init failed (non-blocking): {e}")
     except Exception as e:
         logger.warning(f"Knowledge base init failed: {e}")
 
