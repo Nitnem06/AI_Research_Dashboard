@@ -8,7 +8,7 @@ from app.models.user import User
 from app.models.research import ResearchReport, WatchlistItem
 from app.schemas import ResearchQuery, ReportOut, ReportSummary, ReportUpdate, WatchlistAdd, WatchlistOut
 from app.utils.security import get_current_user
-from app.services.ai.agent import run_research_agent
+from app.services.orchestration import OrchestrationService
 
 router = APIRouter(prefix="/api/research", tags=["research"])
 
@@ -27,8 +27,19 @@ async def run_research(
     if len(payload.query) > 2000:
         raise HTTPException(status_code=422, detail="Query too long (max 2000 chars)")
 
-    # Run the agentic research
-    report_data = await run_research_agent(payload.query)
+    # Initialize the orchestration service
+    orchestration_service = OrchestrationService()
+
+    # Run the research
+    results = await orchestration_service.run_research(payload.query)
+
+    # Check for errors
+    if "error" in results:
+        raise HTTPException(status_code=500, detail=results["error"])
+
+    report_data = results["report_data"]
+    market_data = results["market_data"]
+    news_data = results["news_data"]
 
     # Extract tickers for quick filtering
     tickers = ",".join(
@@ -50,6 +61,31 @@ async def run_research(
     db.add(report)
     await db.commit()
     await db.refresh(report)
+    # Extract tickers for quick filtering
+    tickers = ",".join(
+        c.get("ticker", "") for c in report_data.get("companies", ) if c.get("ticker")
+    )
+
+    # Auto-generate title from AI output or fallback
+    title = report_data.get("title") or f"Research: {payload.query[:80]}"
+
+    report = ResearchReport(
+        org_id=current_user.org_id,  # Ensure tenant isolation
+        author_id=current_user.id,
+        query=payload.query,
+        title=title,
+        report_data=report_data,
+        tags=[],
+        tickers=tickers,
+    )
+    db.add(report)
+    await db.commit()
+    await db.refresh(report)
+
+    # Add market and news data to the report
+    report.report_data["market_data"] = market_data
+    report.report_data["news_data"] = news_data
+
     return report
 
 
