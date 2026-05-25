@@ -136,7 +136,6 @@ SQLAlchemy==2.0.50
 starlette==0.52.1
 threadpoolctl==3.6.0
 tiktoken==0.12.0
-tokenizers==0.22.2
 tqdm==4.67.3
 tree-sitter==0.25.2
 tree-sitter-c-sharp==0.23.1
