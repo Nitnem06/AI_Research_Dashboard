@@ -289,6 +289,22 @@ Dashboard Rendering
 
 ![Homepage](./screenshots/homepage.png)
 
+## Login
+
+![Login](./screenshots/login.png)
+
+## Dashboard
+
+![Dashboard](./screenshots/dashboard.png)
+
+## Market_Activity
+
+![Market_Activity](./screenshots/market_activity.png)
+
+## Research
+
+![Research](./screenshots/research.png)
+
 
 ---
 
