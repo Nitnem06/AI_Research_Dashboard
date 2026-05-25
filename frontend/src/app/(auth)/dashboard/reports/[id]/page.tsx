@@ -4,7 +4,7 @@ import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { ChevronLeft, Tag, Loader2, AlertCircle, Pencil, Check, X } from "lucide-react";
 import { api, ApiError } from "@/lib/api";
-import type { Report } from "@/components";
+import type { Report } from "@/components/layout/index";
 import { ReportView } from "@/components/research/ReportView";
 import { format, parseISO } from "date-fns";
 import clsx from "clsx";

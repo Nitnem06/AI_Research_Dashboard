@@ -12,7 +12,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { api, ApiError } from "@/lib/api";
-import type { ReportSummary } from "@/components";
+import type { ReportSummary } from "@/components/layout/index";
 import { format, parseISO } from "date-fns";
 import clsx from "clsx";
 
