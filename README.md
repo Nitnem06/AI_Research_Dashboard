@@ -9,10 +9,10 @@ The platform enables users to generate structured AI-assisted investment researc
 # Live Deployment
 
 ## Frontend
-https://your-frontend.vercel.app
+https://ai-research-dashboard-4vub5xpya-nitnem-s-projects.vercel.app/login
 
 ## Backend API
-https://your-backend.onrender.com
+https://ai-research-dashboard-8of2.onrender.com
 
 ---
 
@@ -107,7 +107,7 @@ AI_Research_Dashboard/
 ## 1. Clone Repository
 
 ```bash
-git clone https://github.com/your-username/AI_Research_Dashboard.git
+git clone https://github.com/Nitnem06/AI_Research_Dashboard
 cd AI_Research_Dashboard
 ```
 
@@ -220,7 +220,7 @@ uvicorn app.main:app --reload
 Backend runs on:
 
 ```text
-http://localhost:8000
+https://ai-research-dashboard-8of2.onrender.com
 ```
 
 ---
