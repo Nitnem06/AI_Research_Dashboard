@@ -87,7 +87,7 @@ function ToolOrchestration({ active }: { active: boolean }) {
       totalDelay += step.duration;
 
       setTimeout(() => {
-        setCompletedSteps((prev) => new Set([...prev, step.id]));
+        setCompletedSteps((prev) => new Set(Array.from(prev).concat(step.id)));
       }, totalDelay - 300);
     });
   }, [active]);
