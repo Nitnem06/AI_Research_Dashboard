@@ -8,7 +8,7 @@ import type {
   ReportSummary,
   WatchlistItem,
   DashboardStats,
-} from "@/components";
+} from "@/components/layout/index";
 
 const API_BASE =
   process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";

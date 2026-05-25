@@ -13,7 +13,7 @@ import {
   BookOpen,
   Globe,
 } from "lucide-react";
-import type { ReportData, MarketData, NewsData, FilingsData, Sentiment } from "@/components";
+import type { ReportData, MarketData, NewsData, FilingsData, Sentiment } from "@/components/layout/index";
 import {
   LineChart,
   Line,

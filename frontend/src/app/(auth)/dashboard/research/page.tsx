@@ -14,7 +14,7 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { api, ApiError } from "@/lib/api";
-import type { ReportData } from "@/components";
+import type { ReportData } from "@/components/layout/index";
 import { ReportView } from "@/components/research/ReportView";
 import clsx from "clsx";
 
