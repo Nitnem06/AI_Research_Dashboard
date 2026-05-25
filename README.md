@@ -220,7 +220,7 @@ uvicorn app.main:app --reload
 Backend runs on:
 
 ```text
-https://ai-research-dashboard-8of2.onrender.com
+http://localhost:8000
 ```
 
 ---
