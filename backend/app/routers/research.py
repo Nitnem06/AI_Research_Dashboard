@@ -1,6 +1,6 @@
 from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import Session
 from sqlalchemy import select, and_, or_, func, delete
 
 from app.utils.database import get_db
@@ -20,7 +20,7 @@ router = APIRouter(prefix="/api/research", tags=["research"])
 async def run_research(
     payload: ResearchQuery,
     current_user: User = Depends(get_current_user),
-    db: AsyncSession = Depends(get_db),
+    db: Session = Depends(get_db),
 ):
     """Run AI research agent and persist the report. Tenant-scoped to current org."""
     if not payload.query.strip():
@@ -85,7 +85,7 @@ async def list_reports(
     search: str | None = Query(None),
     tag: str | None = Query(None),
     current_user: User = Depends(get_current_user),
-    db: AsyncSession = Depends(get_db),
+    db: Session = Depends(get_db),
 ):
     """List all research reports for current org (tenant-scoped)."""
     stmt = (
@@ -116,7 +116,7 @@ async def list_reports(
 async def get_report(
     report_id: UUID,
     current_user: User = Depends(get_current_user),
-    db: AsyncSession = Depends(get_db),
+    db: Session = Depends(get_db),
 ):
     """Get a specific report. Enforces tenant isolation."""
     result = await db.execute(
@@ -138,7 +138,7 @@ async def update_report(
     report_id: UUID,
     payload: ReportUpdate,
     current_user: User = Depends(get_current_user),
-    db: AsyncSession = Depends(get_db),
+    db: Session = Depends(get_db),
 ):
     """Update report title or tags."""
     result = await db.execute(
@@ -167,7 +167,7 @@ async def update_report(
 async def delete_report(
     report_id: UUID,
     current_user: User = Depends(get_current_user),
-    db: AsyncSession = Depends(get_db),
+    db: Session = Depends(get_db),
 ):
     """Delete a report. Tenant-scoped."""
     result = await db.execute(
@@ -189,7 +189,7 @@ async def delete_report(
 @router.get("/stats")
 async def get_stats(
     current_user: User = Depends(get_current_user),
-    db: AsyncSession = Depends(get_db),
+    db: Session = Depends(get_db),
 ):
     """Dashboard stats for current org."""
     count_result = await db.execute(
@@ -213,7 +213,7 @@ async def get_stats(
 @router.get("/watchlist", response_model=list[WatchlistOut])
 async def get_watchlist(
     current_user: User = Depends(get_current_user),
-    db: AsyncSession = Depends(get_db),
+    db: Session = Depends(get_db),
 ):
     result = await db.execute(
         select(WatchlistItem)
@@ -227,7 +227,7 @@ async def get_watchlist(
 async def add_to_watchlist(
     payload: WatchlistAdd,
     current_user: User = Depends(get_current_user),
-    db: AsyncSession = Depends(get_db),
+    db: Session = Depends(get_db),
 ):
     # Prevent duplicates within the same org
     existing = await db.execute(
@@ -258,7 +258,7 @@ async def add_to_watchlist(
 async def remove_from_watchlist(
     item_id: UUID,
     current_user: User = Depends(get_current_user),
-    db: AsyncSession = Depends(get_db),
+    db: Session = Depends(get_db),
 ):
     result = await db.execute(
         select(WatchlistItem).where(
