@@ -14,7 +14,7 @@ import {
 import { logout } from "@/lib/auth";
 import { api } from "@/lib/api";
 import { useEffect, useState } from "react";
-import type { User } from "@/components";
+import type { User } from "@/components/layout/index";
 import clsx from "clsx";
 
 const NAV_ITEMS = [
