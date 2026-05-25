@@ -285,14 +285,10 @@ Dashboard Rendering
 
 # Screenshots
 
-Add screenshots inside the `/screenshots` directory.
+## Homepage
 
-Recommended screenshots:
-- Login Page
-- Dashboard
-- Research Workflow
-- Generated Reports
-- Report Details Page
+![Homepage](./screenshots/homepage.png)
+
 
 ---
 
