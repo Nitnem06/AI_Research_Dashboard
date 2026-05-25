@@ -5,7 +5,7 @@ class Settings(BaseSettings):
     APP_NAME: str = "Investment Research Dashboard API"
     DEBUG: bool = False
     DATABASE_URL: str   
-    FRONTEND_URL: str = "http://localhost:3000"
+    FRONTEND_URL: str = "https://ai-research-dashboard-kkbixpm5i-nitnem-s-projects.vercel.app/login"
 
     #DATABASE_URL="sqlite+aiosqlite:///./test.db"
     class Config:

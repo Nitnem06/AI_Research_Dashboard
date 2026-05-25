@@ -26,7 +26,7 @@ class Settings(BaseSettings):
     SAMPLE_DOCS_PATH: str = "./app/data/sample_docs"
 
     # CORS
-    FRONTEND_URL: str = "http://localhost:3000"
+    FRONTEND_URL: str = "https://ai-research-dashboard-kkbixpm5i-nitnem-s-projects.vercel.app/login"
 
     class Config:
         env_file = ".env"

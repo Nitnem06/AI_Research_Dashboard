@@ -11,7 +11,7 @@ import type {
 } from "@/components/layout/index";
 
 const API_BASE =
-  process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000";
+  process.env.NEXT_PUBLIC_API_URL ?? "https://ai-research-dashboard-8of2.onrender.com/";
 
 function getToken(): string | null {
   if (typeof window === "undefined") return null;
